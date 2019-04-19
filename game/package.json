@@ -1,0 +1,27 @@
+{
+  "name": "game",
+  "version": "0.1.0",
+  "description": "Game executable for Talent Land Event",
+  "main": "index.js",
+  "scripts": {
+    "compile-styles": "sass sources/css/styles.scss styles.css -s compressed",
+    "watch-styles": "sass sources/css/styles.scss styles.css -s compressed --watch",
+    "compile-scripts": "browserify sources/js/game.js -o game.js",
+    "watch-scripts": "watchify sources/js/game.js -o game.js",
+    "watch-all": "concurrently --kill-others \"npm run watch-styles\" \"npm run watch-scripts\"",
+    "compile-all": "npm run compile-styles && npm run compile-scripts"
+  },
+  "author": "Owl Digital Design",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^16.2.3",
+    "concurrently": "^4.1.0",
+    "electron": "^4.1.4",
+    "nodemon": "^1.18.11",
+    "sass": "^1.19.0",
+    "watchify": "^3.11.1"
+  },
+  "dependencies": {
+    "matter-js": "^0.14.2"
+  }
+}

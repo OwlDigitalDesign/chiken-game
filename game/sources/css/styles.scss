@@ -1,0 +1,18 @@
+// This is the main file that imports all the elements required for the site
+// Compile this file and include it in your HTML
+
+// External
+@import 'external/main';
+
+// Base
+@import 'vars';
+@import 'patterns';
+
+// Elements
+@import 'elements/main';
+
+// Partials
+@import 'partials/main';
+
+// Views specific styles
+@import 'views/main';

@@ -1,0 +1,1 @@
+// Aquí se van a requerir los módulos de JS como si fuera NodeJS y browserify (o watchify) los va a compilar normal

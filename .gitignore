@@ -65,4 +65,4 @@ styles.css
 styles.css.map
 
 # Compiled JS
-/game.js
+game/game.js

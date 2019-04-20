@@ -1,7 +1,7 @@
 // Configs
-const WORLD_GRAVITY = 0.01
-const JUMP_VELOCITY = -40
-const MOVE_VELOCITY_INCREMENT = 4
+const WORLD_GRAVITY = 0.00091
+const JUMP_VELOCITY = -10   
+const MOVE_VELOCITY_INCREMENT = 3
 
 const ASPECT_RATIO = 16/9
 const GAME_WIDTH = 1000
@@ -21,6 +21,7 @@ const player = require('./player')({
     },
     jumpVelocity : JUMP_VELOCITY,
     moveVelocityIncrement: MOVE_VELOCITY_INCREMENT
+    
 })
 
 // Aliases
@@ -28,7 +29,7 @@ const Engine = Matter.Engine
 const Render = Matter.Render
 const World = Matter.World
 const Bodies = Matter.Bodies
-
+const Events = Matter.Events
 // Create engine
 const engine = Engine.create()
 // Create renderer
@@ -67,11 +68,45 @@ Render.run(render)
 player.write(engine.world)
 
 // Register control events
+/*
 Controls.registerEvent('MOVE_LEFT', e => player.moveX(player.moveVelocityIncrement, 'left', 'increment'))
 Controls.registerEvent('MOVE_RIGHT', e => player.moveX(player.moveVelocityIncrement, 'right', 'increment'))
 Controls.registerEvent('JUMP', e => player.jump())
 
 // Bind keyboard keys for testing
 Controls.bindKey(32, 'JUMP')
-Controls.bindKey(97, 'MOVE_LEFT')
-Controls.bindKey(100, 'MOVE_RIGHT')
+Controls.bindKey(37, 'MOVE_LEFT')
+Controls.bindKey(39, 'MOVE_RIGHT')
+*/
+//Eventos
+Events.on(engine, 'beforeUpdate', function(event) {
+    
+});
+var keys = [];
+  document.body.addEventListener("keydown", function(e) {
+    keys[e.keyCode] = true;
+  });
+  document.body.addEventListener("keyup", function(e) {
+    keys[e.keyCode] = false;
+  });
+
+
+(function cycle() { //render loop
+    console.log('volociti',player.body);
+   
+    
+    window.requestAnimationFrame(cycle);
+
+    if (keys[37] || keys[65]) { //left
+         player.moveX(player.moveVelocityIncrement, 'left', 'increment');
+       
+      } else if (keys[39] || keys[68]) { //right
+        player.moveX(player.moveVelocityIncrement, 'right', 'increment');
+        
+      }
+      if(keys[32] || keys[38]){
+
+        player.jump()
+      }
+      //player.moveX(0,'','fixed');
+ })();

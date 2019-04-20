@@ -17,12 +17,13 @@ class Player {
         this.gameArea = params.gameArea
         this.jumpVelocity = params.jumpVelocity || -10
         this.moveVelocityIncrement = params.moveVelocityIncrement || 5
+        this.maxSpeed = params.maxSpeed || 6
         // Element
         this.body = params.body || false
     }
     write(world, pos = {x: this.gameArea.width / 2, y: 200}, size = {w: 100, h: 100}){
         // Create body
-        this.body = Bodies.rectangle(pos.x, pos.y, size.w, size.h)
+        this.body = Bodies.rectangle(pos.x, pos.y, size.w, size.h,{ inertia: Infinity })
         // Add to @param world
         World.add(world, this.body)
     }
@@ -49,18 +50,39 @@ class Player {
         if(!this.body) throw "You must write the body before moving"
         switch(type){
             case 'fixed':
+                
+                 
+                
                 // Change the position of the Body in X where -1 is the most left and 1 the most right
                 // [Todo: spell check]
                 break
             case 'increment':
                 // Negative velocity on left direction
                 if(direction == "left") value = -value
+
+                //value = (value * this.maxSpeed);
                 value = this.body.velocity.x + value
                 // Apply velocity on the body on X
                 Body.setVelocity(this.body, {
                     x: value,
                     y: this.body.velocity.y
                 })
+                //maxSpeed
+                if(this.body.velocity.x> this.maxSpeed){
+                    Body.setVelocity(this.body, {
+                        x: this.maxSpeed,
+                        y: this.body.velocity.y
+                    })
+
+                }
+                if(this.body.velocity.x< -this.maxSpeed){
+                    Body.setVelocity(this.body, {
+                        x: -this.maxSpeed,
+                        y: this.body.velocity.y
+                    })
+
+                }
+
                 break
             default:
                 // error

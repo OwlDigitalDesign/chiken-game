@@ -31,6 +31,7 @@ const World = Matter.World
 const Bodies = Matter.Bodies
 const Events = Matter.Events
 const Body = Matter.Body;
+const Bounds = Matter.Bounds;
 // Create engine
 const engine = Engine.create()
 // Create renderer
@@ -44,7 +45,8 @@ const render = Render.create({
         background: '#18181d',
         wireframeBackground: '#0f0f13',
         enabled: true,
-        wireframes: false
+        wireframes: false,
+        hasBounds: true//cambio
     }
 })
 
@@ -80,9 +82,21 @@ Controls.bindKey(37, 'MOVE_LEFT')
 Controls.bindKey(39, 'MOVE_RIGHT')
 */
 //Eventos
-Events.on(engine, 'beforeUpdate', function(event) {
-    
-});
+
+//configuracion delos bounds
+world_padding = 300;
+engine.world.bounds.min.x = 0 - world_padding;
+engine.world.bounds.min.y = 0 - world_padding;
+engine.world.bounds.max.x = 3000 + world_padding;
+engine.world.bounds.max.y = 3000;
+
+bounds_scale_target = 1;
+tbounds_scale = { x: 1, y: 1 };
+var canvas =document.getElementsByTagName('canvas')[0];
+
+var ctx = canvas.getContext("2d");//tomar el canvas
+
+//---------------
 var walls = [];
 var keys = [];
   document.body.addEventListener("keydown", function(e) {
@@ -93,10 +107,26 @@ var keys = [];
   });
 
 
+ 
+ 
+window.onresize = function() {
+    this.render.canvas.width = GAME_WIDTH;
+    this.render.canvas.height = GAME_HEIGHT;
+
+}.bind(this);
+
 (function cycle() { //render loop
   // console.log(player.body.position);
-   
-    
+  ctx.translate(GAME_WIDTH/2, GAME_HEIGHT/2);
+  ctx.scale(1 , 1);
+  ctx.translate(-GAME_WIDTH/2, -GAME_HEIGHT/2);  
+
+  // center view at player 
+  Bounds.shift(render.bounds,
+  {
+      x: 0,
+      y: player.body.position.y - GAME_HEIGHT / 2
+  });
     window.requestAnimationFrame(cycle);
 
     if (keys[37] || keys[65]) { //left
@@ -112,7 +142,6 @@ var keys = [];
       }
       //player.moveX(0,'','fixed');
  })();
-
 
 
 

@@ -30,6 +30,7 @@ const Render = Matter.Render
 const World = Matter.World
 const Bodies = Matter.Bodies
 const Events = Matter.Events
+const Body = Matter.Body;
 // Create engine
 const engine = Engine.create()
 // Create renderer
@@ -82,6 +83,7 @@ Controls.bindKey(39, 'MOVE_RIGHT')
 Events.on(engine, 'beforeUpdate', function(event) {
     
 });
+var walls = [];
 var keys = [];
   document.body.addEventListener("keydown", function(e) {
     keys[e.keyCode] = true;
@@ -92,7 +94,7 @@ var keys = [];
 
 
 (function cycle() { //render loop
-    console.log('volociti',player.body);
+  // console.log(player.body.position);
    
     
     window.requestAnimationFrame(cycle);
@@ -110,3 +112,79 @@ var keys = [];
       }
       //player.moveX(0,'','fixed');
  })();
+
+
+
+
+
+
+
+ function getRandomIntInclusive(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function createWall() {
+
+
+    var h =60;
+    var y = -GAME_HEIGHT - h  / 2;
+
+    var cut = getRandomIntInclusive(60, GAME_WIDTH+60 - 120);
+    var hole = getRandomIntInclusive(120, 160);
+
+    var w1 = GAME_WIDTH+60 - 60 - cut - hole;
+    var w2 = cut - hole;
+
+    var x1 = w1 / 2;
+    var x2 = GAME_WIDTH+60- w2 / 2 - 60; 
+    console.log()
+    
+
+    var wall = {
+        top: Bodies.rectangle(x1,y, w1,h, { isStatic: true }),
+        bottom: Bodies.rectangle(x2,y,w2,h, { isStatic: true }),
+    };
+    console.log(wall);
+    // add body to walls array so the wall's position will be updated on each loop
+    walls.push(wall);
+
+    World.add(engine.world, [wall.top, wall.bottom]);
+}
+function removeWall(wall) {
+    World.remove(engine.world, [wall.top, wall.bottom]);
+    walls.shift();
+}
+function moveWalls() {
+    //if (collision || !start) return;
+
+    walls.map(function(wall, i) {
+        // remove the wall when it's out of view
+        if (wall.top.position.y> 700) {
+            removeWall(wall);
+           // increaseScore(1);
+            createWall();
+        }
+
+        // point to translate the wall 
+        var t = { x: 0, y: 2 };
+        Body.translate(wall.top, t);
+        Body.translate(wall.bottom, t);
+    });
+}
+function growWalls() {
+    //if (collision || !start) return;
+
+    walls.map(function(wall, i) {
+       
+
+        // point to translate the wall 
+        var t = { x: 0, y: 2 };
+        Body.translate(wall.top, t);
+        Body.translate(wall.bottom, t);
+    });
+}
+createWall();
+Events.on(engine, 'tick', moveWalls);
+//Events.on(engine, 'tick', growWalls);
+    // Collision Event ends the game :-(
+   // Events.on(engine, 'collisionStart', endGame);

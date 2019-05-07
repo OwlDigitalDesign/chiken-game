@@ -11,7 +11,7 @@ const GAME_HEIGHT = 1000000// GAME_WIDTH / ASPECT_RATIO
 const Matter = require('matter-js')
 const Controls = require('./controls')()
 
-
+var score = 0;
 // Así como hice un módulo para player que la idea es que contenga todas las funciones que ejecutará la gallina, deberían
 // de existir mmódulos por los demás elementos que pueden ir desde los tipos de "enemigos", escenarios, pantallas, etc
 // para que este archivo sea solo el puente que conecta todo! <3
@@ -24,7 +24,8 @@ const player = require('./player')({
     moveVelocityIncrement: MOVE_VELOCITY_INCREMENT
     
 })
-
+//GUI
+const scoreDisplay = document.getElementById('score');
 
 // Aliases
 const Engine = Matter.Engine
@@ -53,7 +54,7 @@ const render = Render.create({
         enabled: true,
         wireframes: false,
         hasBounds: true,//cambio
-        width: 1000,
+        width: GAME_WIDTH,
         height: 9000
     }
 })
@@ -175,6 +176,7 @@ Events.on(engine, 'collisionEnd', function(event) {
             World.remove(engine.world, pair.bodyA.parent);
         } else if (pair.bodyB.label === 'point') {
             console.log('Un Punto');
+            increaseScore(1);
             World.remove(engine.world, pair.bodyB.parent);
             
         }  
@@ -224,10 +226,11 @@ Events.on(engine, 'tick', function() {
   
       if (keys[37] || keys[65]) { //left
            player.moveX(player.moveVelocityIncrement, 'left', 'increment');
+           
          
         } else if (keys[39] || keys[68]) { //right
           player.moveX(player.moveVelocityIncrement, 'right', 'increment');
-          ;
+          
         }
         if(keys[32] || keys[38]){
             
@@ -245,15 +248,26 @@ Events.on(engine, 'tick', function() {
             Walls.destroyWall();
             Walls.createWall();
         } 
+        if(player.body.velocity.x <0){
+            if(player.body.velocity.y >0){
+                player.body.render.sprite.texture= "./sources/img/CLD.png";
+            }else{
+                player.body.render.sprite.texture= "./sources/img/CL.png";
+            }
+        }
+        if(player.body.velocity.x >0){
+            if(player.body.velocity.y >0){
+                player.body.render.sprite.texture= "./sources/img/CRD.png";
+            }else{
+                player.body.render.sprite.texture= "./sources/img/CR.png";
+            }
+        }
        // Body.setPosition(destroyerWall,{x:destroyerWall.position.x,y:player.body.position.y})
     }else{
         player.body.isStatic= true;
     }
 });
 
-function getRandomIntInclusive(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 
 
 
@@ -263,3 +277,16 @@ function getRandomIntInclusive(min, max) {
 //Events.on(engine, 'tick', growWalls);
     // Collision Event ends the game :-(
    // Events.on(engine, 'collisionStart', endGame);
+   //funciones 
+function increaseScore(point) {
+   score+=point;
+   scoreDisplay.innerText= score;
+}
+function resetScore() {
+    score = 0;
+    scoreDisplay.innerText = score;
+}
+
+function getRandomIntInclusive(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}

@@ -1,0 +1,73 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700,700italic,400italic,100italic,100);
+
+%spread {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+}
+
+
+
+button {
+	display: block;
+	padding: 0.7em 1.5em;
+	outline: none;
+	border: none;
+	color: white;
+	font-size: 32px;
+	text-transform: uppercase;
+}
+
+#fail {
+     h2 {
+          margin-bottom: 1em;
+          font-size: 48px;
+          font-weight: 500;
+          color: tomato;
+     }
+}
+
+#reset {
+	background-color: tomato;
+     border: solid 2px darken(tomato, 15%);
+	&:hover {
+		background-color: darkslategray;
+          border: solid 2px darken(darkslategray, 10%);
+	}
+}
+
+#start {
+	background-color: #50d28b;
+     border: solid 2px darken(#50d28b, 15%);
+	&:hover {
+		background-color: darkslategray;
+          border: solid 2px darken(darkslategray, 10%);
+	}
+}
+
+#game {
+	@extend %spread;
+}
+
+#gui {
+	@extend %spread;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1;
+	pointer-events: none;
+	button {
+		pointer-events: initial;
+	}
+}
+
+#score {
+	position: absolute;
+	top: 1em;
+	left: 1em;
+	font-size: 48px;
+	font-weight: 500;
+	color: slategray;
+}

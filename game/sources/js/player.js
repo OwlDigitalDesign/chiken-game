@@ -22,18 +22,18 @@ class Player {
         // Element
         this.body = params.body || false
     }
-    write(world, pos = {x: this.gameArea.width / 2, y: this.gameArea.height-200}, size = {w: 100, h: 100}){
+    write(world, pos = {x: this.gameArea.width / 2, y: this.gameArea.height-200}, size = {w: 50, h: 50}){
         // Create body
         this.body = Bodies.rectangle(pos.x, pos.y, size.w, size.h,
             { inertia: Infinity 
             ,label:'player',
             density:0.015,
-            friction: 0.01,
+            friction: .1,
             render: {
                 sprite: {
-                    texture: './sources/img/gallina.png',
-                    xScale: .3,
-                    yScale:.3
+                    texture: './sources/img/CR.png',
+                    xScale:2.5,
+                    yScale:2.5
                 }
             }
         }
@@ -77,7 +77,9 @@ class Player {
             case 'increment':
                 // Negative velocity on left direction
                 if(direction == "left") value = -value
-
+                
+                
+                
                 //value = (value * this.maxSpeed);
                 value = this.body.velocity.x + value
                 // Apply velocity on the body on X

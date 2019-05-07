@@ -17,14 +17,16 @@ class Player {
         this.gameArea = params.gameArea
         this.jumpVelocity = params.jumpVelocity || -10
         this.moveVelocityIncrement = params.moveVelocityIncrement || 5
-        this.maxSpeed = params.maxSpeed || 6
+        this.maxSpeed = params.maxSpeed || 6 
+        this.live= true;
         // Element
         this.body = params.body || false
     }
-    write(world, pos = {x: this.gameArea.width / 2, y: 200}, size = {w: 100, h: 100}){
+    write(world, pos = {x: this.gameArea.width / 2, y: this.gameArea.height-200}, size = {w: 100, h: 100}){
         // Create body
-        this.body = Bodies.rectangle(pos.x, pos.y, size.w, size.h,{ inertia: Infinity })
+        this.body = Bodies.rectangle(pos.x, pos.y, size.w, size.h,{ inertia: Infinity ,label:'player',density:0.015})
         // Add to @param world
+       // this.body.restitution=1;
         World.add(world, this.body)
     }
     destroy(){
@@ -50,7 +52,10 @@ class Player {
         if(!this.body) throw "You must write the body before moving"
         switch(type){
             case 'fixed':
-                
+                Body.setVelocity(this.body, {
+                    x: value*this.maxSpeed,
+                    y: this.body.velocity.y
+                })
                  
                 
                 // Change the position of the Body in X where -1 is the most left and 1 the most right

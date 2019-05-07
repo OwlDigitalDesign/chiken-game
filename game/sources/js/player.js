@@ -24,7 +24,20 @@ class Player {
     }
     write(world, pos = {x: this.gameArea.width / 2, y: this.gameArea.height-200}, size = {w: 100, h: 100}){
         // Create body
-        this.body = Bodies.rectangle(pos.x, pos.y, size.w, size.h,{ inertia: Infinity ,label:'player',density:0.015})
+        this.body = Bodies.rectangle(pos.x, pos.y, size.w, size.h,
+            { inertia: Infinity 
+            ,label:'player',
+            density:0.015,
+            friction: 0.01,
+            render: {
+                sprite: {
+                    texture: './sources/img/gallina.png',
+                    xScale: .3,
+                    yScale:.3
+                }
+            }
+        }
+        )
         // Add to @param world
        // this.body.restitution=1;
         World.add(world, this.body)

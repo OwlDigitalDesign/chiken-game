@@ -27,8 +27,8 @@ class Wall {
         
         var y = this.gameArea.height;
 
-        var cut = this.getRandomIntInclusive(60, this.gameArea.width+60 - 120);
-        var hole = this.getRandomIntInclusive(150, 300);
+        var cut = this.getRandomIntInclusive(60, this.gameArea.width - 120);
+        var hole = this.getRandomIntInclusive(200, 300);
 
         var w1 = this.gameArea.width+150 - 60 - cut - hole;
         var w2 = cut - hole;
@@ -40,8 +40,8 @@ class Wall {
         var xp =w1 + (wp/2);
         // Create body
          this.body = {
-            lef: Bodies.rectangle(x1,y, w1,h, { isStatic: true,isSensor:true ,label:'death'}),
-            right: Bodies.rectangle(x2,y,w2,h, { isStatic: true ,isSensor:true,label:'death' }),
+            lef: Bodies.rectangle(x1,y, w1,h, { isStatic: true,isSensor:false ,label:'death'}),
+            right: Bodies.rectangle(x2,y,w2,h, { isStatic: true ,isSensor:false,label:'death' }),
             point: Bodies.rectangle(xp,y-h,wp,h, { isStatic: true ,isSensor:true ,label:'point',render:{
                 background: '#ff3321'
             }  })

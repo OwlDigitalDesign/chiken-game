@@ -1,6 +1,6 @@
 // Configs
 const WORLD_GRAVITY = 0.005
-const JUMP_VELOCITY = -20   
+const JUMP_VELOCITY = -15   
 const MOVE_VELOCITY_INCREMENT = 1
 
 const ASPECT_RATIO = 16/9
@@ -32,9 +32,10 @@ const Render = Matter.Render
 const World = Matter.World
 const Bodies = Matter.Bodies
 const Events = Matter.Events
-
+const Query = Matter.Query
 const Body = Matter.Body;
 const Bounds = Matter.Bounds;
+const Composite = Matter.Composite;
 
 
 // Create engine
@@ -67,6 +68,7 @@ engine.world.gravity.scale = WORLD_GRAVITY
 
 // Add bodies to world
 World.add(engine.world, [ground])
+
 // Execute engine and start rendering
 Engine.run(engine)
 Render.run(render)
@@ -126,17 +128,11 @@ var keys = [];
     keys[e.keyCode] = false;
   });
 
-
-Walls.createWall();
-Walls.createWall();
-Walls.createWall();
-Walls.createWall();
-Walls.createWall();
-
-console.log(Walls);
-;
-
-console.log(Walls);
+//Generar esenario
+Walls.createWall(); 
+Walls.createWall(); 
+Walls.createWall(); 
+Walls.createWall();  
 
  
 
@@ -182,7 +178,16 @@ Events.on(engine, 'collisionEnd', function(event) {
             World.remove(engine.world, pair.bodyB.parent);
             
         }  
-           
+        if (pair.bodyA.label === "destroy") {           
+            console.log('Destruir');
+            
+            
+        } else if (pair.bodyB.label === 'destroy') {
+            console.log('Destruir');
+            
+            
+        }  
+       
     }
 });
 console.log(GAME_HEIGHT);
@@ -228,8 +233,21 @@ Events.on(engine, 'tick', function() {
             
           player.jump();
         }
-        //vreser y decreser 
+        //raycast 
+        var bodies = Composite.allBodies(engine.world);
+        var  startPoint = { x: 0, y: player.body.position.y+800 };
+        var  endPoint = { x: GAME_HEIGHT, y: player.body.position.y+800 };  
+        var collisions = Query.ray(bodies, startPoint, endPoint);
+       
         
+        if (collisions.length > 1) {
+            console.log('raycast',collisions);
+            Walls.destroyWall();
+            Walls.createWall();
+        } 
+       // Body.setPosition(destroyerWall,{x:destroyerWall.position.x,y:player.body.position.y})
+    }else{
+        player.body.isStatic= true;
     }
 });
 

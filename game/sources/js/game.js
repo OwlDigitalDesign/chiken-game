@@ -3,7 +3,7 @@ const WORLD_GRAVITY = 0.005
 const JUMP_VELOCITY = -15   
 const MOVE_VELOCITY_INCREMENT = 1
 
-const ASPECT_RATIO = 16/9
+//const ASPECT_RATIO = 16/9
 const GAME_WIDTH = 1000
 const GAME_HEIGHT = 1000000// GAME_WIDTH / ASPECT_RATIO
 
@@ -68,6 +68,7 @@ const ground = Bodies.rectangle(Math.round(GAME_WIDTH / 2), GAME_HEIGHT, GAME_WI
 engine.world.gravity.scale = WORLD_GRAVITY
 
 // Add bodies to world
+
 World.add(engine.world, [ground])
 
 // Execute engine and start rendering
@@ -106,12 +107,6 @@ Controls.bindKey(39, 'MOVE_RIGHT')
 */
 //Eventos
 
-//configuracion delos bounds
-world_padding = 300;
-engine.world.bounds.min.x = 0 - world_padding;
-engine.world.bounds.min.y = 0;
-engine.world.bounds.max.x = GAME_WIDTH + world_padding;
-engine.world.bounds.max.y = GAME_HEIGHT;
 
 bounds_scale_target = 1;
 tbounds_scale = { x: 1, y: 1 };
@@ -145,7 +140,7 @@ Events.on(engine, 'collisionStart', function(event) {
     
     for (var i = 0, j = pairs.length; i != j; ++i) {
         var pair = pairs[i];
-        console.log(pair);
+        //console.log(pair);
         if (pair.bodyA.label === "death") {
             console.log('Muerto');
             player.live= false;
@@ -169,23 +164,23 @@ Events.on(engine, 'collisionEnd', function(event) {
     
     for (var i = 0, j = pairs.length; i != j; ++i) {
         var pair = pairs[i];
-        console.log(pair);
+        //console.log(pair);
         if (pair.bodyA.label === "point") {           
-            console.log('Un punto');
+           // console.log('Un punto');
             
             World.remove(engine.world, pair.bodyA.parent);
         } else if (pair.bodyB.label === 'point') {
-            console.log('Un Punto');
+            //console.log('Un Punto');
             increaseScore(1);
             World.remove(engine.world, pair.bodyB.parent);
             
         }  
         if (pair.bodyA.label === "destroy") {           
-            console.log('Destruir');
+           // console.log('Destruir');
             
             
         } else if (pair.bodyB.label === 'destroy') {
-            console.log('Destruir');
+            //console.log('Destruir');
             
             
         }  
@@ -197,7 +192,9 @@ console.log(GAME_HEIGHT);
 Events.on(engine, 'tick', function() {
     if(player.live){
         
-        //console.log(PossionRelativa);
+
+        console.log(player.body.position.x);
+      
         //Fijar la camara
         var PossionRelativa =player.body.position.y-300; 
         
@@ -230,7 +227,7 @@ Events.on(engine, 'tick', function() {
          
         } else if (keys[39] || keys[68]) { //right
           player.moveX(player.moveVelocityIncrement, 'right', 'increment');
-          
+           
         }
         if(keys[32] || keys[38]){
             
@@ -244,7 +241,7 @@ Events.on(engine, 'tick', function() {
        
         
         if (collisions.length > 1) {
-            console.log('raycast',collisions);
+           // console.log('raycast',collisions);
             Walls.destroyWall();
             Walls.createWall();
         } 
@@ -281,6 +278,22 @@ Events.on(engine, 'tick', function() {
 function increaseScore(point) {
    score+=point;
    scoreDisplay.innerText= score;
+    if(score < 5 ){
+        Walls.cmin= 100 ;
+        Walls.cmax = 250;
+    }else if(( score>=5 && score <10 ) ){
+        Walls.cmin= 250 ;
+        Walls.cmax = 350;
+    } else if(( score>=10 && score <30 ) ){
+        Walls.cmin= 350 ;
+        Walls.cmax = 450;
+    } else if( ( score>=30 && score <40 ) ){
+        Walls.cmin= 450 ;
+        Walls.cmax = 550;
+    } else if(score>=40  ){
+        Walls.cmin= 550 ;
+        Walls.cmax = 650;
+    }
 }
 function resetScore() {
     score = 0;

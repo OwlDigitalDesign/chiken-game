@@ -65,11 +65,14 @@ class Player {
         if(!this.body) throw "You must write the body before moving"
         switch(type){
             case 'fixed':
-                Body.setVelocity(this.body, {
-                    x: value*this.maxSpeed,
+                var Razon= this.gameArea.width/2;                
+                var xposition = val*Razon+Razon ;
+                this.body.position.x = xposition;
+               Body.setVelocity(this.body, {
+                    x: 0,
                     y: this.body.velocity.y
                 })
-                 
+                
                 
                 // Change the position of the Body in X where -1 is the most left and 1 the most right
                 // [Todo: spell check]

@@ -18,6 +18,9 @@ class Walls {
         this.lastPosition = params.lastPosition || 0
         this.engineworld  = params.engineworld
         this.gameArea= params.gameArea
+        this.lastCut =params.lastCut || 250
+        this.cmin =100
+        this.cmax = 250 
         
     }
     createWall(){
@@ -27,8 +30,20 @@ class Walls {
                 width:this.gameArea.width
             }
         })
-        wall.write(this.engineworld,60);
-        this.elements.push(wall);
+        var cond = true;
+        do{
+
+            var cut = this.getRandomIntInclusive(0, this.gameArea.width - 100);
+            var diference = Math.abs(cut-this.lastCut)
+           
+            if((diference>this.cmin && diference<this.cmax ) ){
+                console.log("diferencia entre  cortes",diference);
+                cond= false;
+            }   
+        }while(cond); 
+        this.lastCut = cut;
+        wall.write(this.engineworld,60,cut);
+        this.elements.push(wall); 
         this.lastPosition-= 60+300;
     }
     destroyWall(){
@@ -36,7 +51,10 @@ class Walls {
         wall.destroy(this.engineworld);
        
     }
-    
+    getRandomIntInclusive(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }   
+     
     
 
      

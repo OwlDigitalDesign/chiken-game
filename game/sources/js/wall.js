@@ -22,13 +22,17 @@ class Wall {
         this.internalCycle = 0;
         
     }
-    write(world,h){
+    write(world,h,cut){
 
         
         var y = this.gameArea.height;
 
-        var cut = this.getRandomIntInclusive(60, this.gameArea.width - 120);
-        var hole =200;//this.getRandomIntInclusive(200, 300);
+        if(this.gameArea.width <1000){
+            var hole =150;//this.getRandomIntInclusive(200, 300);
+        }else{
+            var hole =200;//this.getRandomIntInclusive(200, 300);
+        }
+        
 
         var w1 = this.gameArea.width+150 - 60 - cut - hole;
         var w2 = cut - hole;
@@ -40,7 +44,7 @@ class Wall {
         var xp =w1 + (wp/2);
         // Create body
          this.body = {
-            lef: Bodies.rectangle(x1,y, w1,h, { 
+            lef: Bodies.rectangle(x1-50,y, w1+50,h, { 
                 isStatic: true,
                 isSensor:false ,
                 label:'death', 
@@ -49,7 +53,7 @@ class Wall {
                     strokeStyle: 'red' 
                 } 
             }),
-            right: Bodies.rectangle(x2,y,w2,h, { 
+            right: Bodies.rectangle(x2,y,w2+50,h, { 
                 isStatic: true ,
                 isSensor:false,
                 label:'death', 
@@ -110,9 +114,7 @@ class Wall {
         
     }
    
-    getRandomIntInclusive(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-    }   
+    
 
      
 }
